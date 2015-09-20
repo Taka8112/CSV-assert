@@ -1,0 +1,10 @@
+check,request,path,test,session,cookie,statusCode,query.geo[type],query.geo[coordinates],param.id
+TRUE,get,/1/communities/nearby,取得数確認,ON,{},200,Point,"[123,45]",{}
+FALSE,get,/1/communities/nearby,取得数確認,ON,{},200,Point,"[123,44]",{}
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
