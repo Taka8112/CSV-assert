@@ -7,6 +7,5 @@ CSV-assert is server side assert tool. This tool is using Node.js and HTTP reque
 node:
 
 ```
-$ npm install CSV-assert
+$ npm install csv-assert
 ```
-

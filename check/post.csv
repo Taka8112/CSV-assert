@@ -1,6 +1,6 @@
 check,request,path,test,session,cookie,statusCode,field.name,field.geo[type],field.geo[coordinates],attach.main_image
-TRUE,post,/1/communities/create,文字数制限,ON,{},200,foo,Point,"[123,45]",/images/main_image.jpg
-FALSE,post,/1/communities/create,文字数制限,ON,{},200,tobi,Point,"[123,44]",{}
+TRUE,post,/login,word limit,ON,{},200,foo,Point,"[123,45]",/images/main_image.jpg
+FALSE,post,/login,success,ON,{},200,tobi,Point,"[123,44]",{}
 ,,,,,,,,,,
 ,,,,,,,,,,
 ,,,,,,,,,,
