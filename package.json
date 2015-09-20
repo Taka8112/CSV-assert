@@ -1,0 +1,30 @@
+{
+  "name": "csv-assert",
+  "version": "0.1.3",
+  "description": "Node.js Assert tool using CSV file",
+  "main": "check.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Taka8112/CSV-assert.git"
+  },
+  "keywords": [
+    "Assert",
+    "superagent",
+    "CSV"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Taka8112/CSV-assert/issues"
+  },
+  "dependencies": {
+    "should": "^4.1.0",
+    "mocha": "^2.3.2",
+    "csvtojson": "^0.4.2",
+    "async": "^1.4.2",
+    "superagent": "^0.20.0"
+  }
+}
