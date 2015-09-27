@@ -7,10 +7,12 @@ exports.signup = function(){
   return function(req, res, next){
     var name = req.body.name || "";
     var email = req.body.email || "";
+    var password = req.body.password || "";
 
     Members.findOne({$or:[
       {name: req.body.name},
-      {email: req.body.email}
+      {email: req.body.email},
+      {password: req.body.password}
     ]})
     .exec(function(err, mem){
       if(err){
@@ -22,11 +24,17 @@ exports.signup = function(){
         var member = new Members();
         member.name = req.body.name;
         member.email = req.body.email;
+        member.password = req.body.password;
         
         member.save(function(err, m){
           res.json(m);
         });
       }
     });
+  };
+};
+
+exports.login = function() {
+  return function(req, res, next){
   };
 };
