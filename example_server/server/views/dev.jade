@@ -1,0 +1,19 @@
+extends layout
+
+block content
+  h1= title
+  p Welcome to #{title}
+ 
+  ul
+    li Members
+      p /signup
+         form(action='/signup', method='post')
+          p
+           | name:
+           input(type='text', name='name')
+          p
+           | email:
+           input(type='text', name='email')
+          p
+           input(type='submit', value='Signup')
+           input(type='reset', value='Reset')

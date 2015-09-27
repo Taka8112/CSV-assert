@@ -1,0 +1,5 @@
+rm -rf /db
+rm -rf data
+mkdir data
+mkdir data/db
+mongod --dbpath data/db
