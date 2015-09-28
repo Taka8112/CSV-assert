@@ -36,5 +36,19 @@ exports.signup = function(){
 
 exports.login = function() {
   return function(req, res, next){
+    var user = req.body || {};
+    var password = user.password;
+
+    Members.findOne({$or: [
+      {name: user.name_or_email},
+      {email: user.name_or_email}
+    ]})
+    .exec(function(err, member){
+      if(member){
+        return next(new Error('error'));
+      } else {
+        res.json(req.body);
+      }
+    });
   };
 };

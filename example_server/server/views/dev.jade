@@ -20,3 +20,14 @@ block content
           p
            input(type='submit', value='Signup')
            input(type='reset', value='Reset')
+     p /login
+         form(action='/login', method='post')
+          p
+           | name_or_email:
+           input(type='text', name='name_or_email')
+          p
+           | password:
+           input(type='text', name='password')
+          p
+           input(type='submit', value='Login')
+           input(type='reset', value='Reset')

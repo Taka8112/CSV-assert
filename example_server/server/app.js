@@ -8,7 +8,12 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var http = require("http");
 var mongoose = require("mongoose");
+var session = require("express-session");
+var RedisStore = require("connect-redis")(session);
 var app = express();
+
+var middleware = require("./lib/index");
+var sessionCheck = middleware.sessionCheck;
 
 // mongoose connect
 var uri = 'mongodb://localhost/example_server';
@@ -25,6 +30,17 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(session({
+  secret: "secret key",
+  resave: true,
+  saveUninitialized: true,
+  store: new RedisStore(),
+  cookie: {
+    maxAge: 30 * 60 * 1000 //30min
+  }
+}));
+
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 // API
@@ -37,7 +53,8 @@ var dev = require('./routes/dev');
 app.use('/dev', dev);
 var members = require('./routes/members');
 app.post('/signup', members.signup());
-app.post('login', members.login());
+app.post('/login',  members.login());
+//app.post('/login', sessionCheck() , members.login());
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
