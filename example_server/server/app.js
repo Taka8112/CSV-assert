@@ -54,7 +54,7 @@ app.use('/dev', dev);
 var members = require('./routes/members');
 app.post('/signup', members.signup());
 app.post('/login',  members.login());
-//app.post('/login', sessionCheck() , members.login());
+app.get('/logout',  members.logout());
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

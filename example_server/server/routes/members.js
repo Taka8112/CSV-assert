@@ -26,8 +26,8 @@ exports.signup = function(){
         member.email = req.body.email;
         member.password = req.body.password;
         
-        member.save(function(err, m){
-          res.json(m);
+        member.save(function(err, mem){
+          res.json(mem);
         });
       }
     });
@@ -44,11 +44,25 @@ exports.login = function() {
       {email: user.name_or_email}
     ]})
     .exec(function(err, member){
-      if(member){
-        return next(new Error('error'));
+      if(!member){
+        req.session.destroy(function(){
+          return next(new Error('Member not found'));
+        });
       } else {
-        res.json(req.body);
+        req.session.regenerate(function(){
+          req.session.account = member;
+          res.json(member);
+        });
       }
     });
   };
+};
+
+exports.logout = function(){
+  return function(req, res, next){
+    var session = req.session.account._id;
+    req.session.destroy(function(){
+      res.json("session delete account is : " + session);
+    });
+  }
 };
