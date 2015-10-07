@@ -59,7 +59,7 @@ app.post('/signup', members.signup());
 app.post('/login',  members.login());
 app.get('/logout',  members.logout());
 app.post('/datas/create', datas.create());
-app.get('/datas/show',    datas.show());
+app.get('/datas/show/:id',    datas.show());
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

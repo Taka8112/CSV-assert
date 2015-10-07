@@ -14,7 +14,7 @@ var datas = new mongoose.Schema({
     type : Date,
   default : Date.now
   },
-  image: { type : ObjectId, default: null }
+  image: { img: Buffer }
 });
 
 datas.index({geo: '2dsphere'});
