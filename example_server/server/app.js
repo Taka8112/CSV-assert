@@ -28,7 +28,7 @@ app.set('port', process.env.PORT || 8080);
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(session({
   secret: "secret key",
@@ -44,6 +44,7 @@ app.use(session({
 app.use(express.static(path.join(__dirname, 'public')));
 
 // API
+//
 var routes = require('./routes/index');
 var users = require('./routes/users');
 app.use('/', routes);
@@ -52,9 +53,13 @@ app.use('/users', users);
 var dev = require('./routes/dev');
 app.use('/dev', dev);
 var members = require('./routes/members');
+var datas = require('./routes/datas');
+
 app.post('/signup', members.signup());
 app.post('/login',  members.login());
 app.get('/logout',  members.logout());
+app.post('/datas/create', datas.create());
+app.get('/datas/show',    datas.show());
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

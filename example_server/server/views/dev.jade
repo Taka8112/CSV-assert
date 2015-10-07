@@ -13,10 +13,10 @@ block content
            input(type='text', name='name')
           p
            | email:
-           input(type='text', name='email')
+           input(type='email', name='email')
           p
            | password:
-           input(type='text', name='password')
+           input(type='password', name='password')
           p
            input(type='submit', value='Signup')
            input(type='reset', value='Reset')
@@ -34,3 +34,25 @@ block content
      p /logout
          form(action='/logout', method='get')
            input(type='submit', value='Logout')
+  ul
+    li Datas 
+     p /datas/create
+         form(action='/datas/create', method='post')
+          p
+           | name:
+           input(type='text', name='name')
+          p
+           | geo[type]:
+           input(type='text', name='geo[type]')
+          p
+           | geo[coordinates] longtitude (-180° 〜 180°):
+           input(type='text', name='geo[coordinates][]')
+          p
+           | geo[coordinates] latitude (-90° 〜 90°):
+           input(type='text', name='geo[coordinates][]')
+          p
+           input(type='submit', value='Data Create')
+           input(type='reset', value='Reset')
+     p /datas/show
+         form(action='/datas/show', method='get')
+           input(type='submit', value='Data show!!')

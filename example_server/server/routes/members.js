@@ -3,6 +3,14 @@ var router = express.Router();
 
 var Members = require("../lib/models/members");
 
+/**
+ *  POST /signup
+ *  member registration
+ *  @param {Stirng} name
+ *  @param {Stirng} email 
+ *  @param {Stirng} password
+ *
+ */
 exports.signup = function(){
   return function(req, res, next){
     var name = req.body.name || "";
@@ -34,6 +42,14 @@ exports.signup = function(){
   };
 };
 
+/**
+ *  POST /login
+ *  member login
+ *  @param {Stirng} name_or_email
+ *  @param {Stirng} password
+ *
+ */
+
 exports.login = function() {
   return function(req, res, next){
     var user = req.body || {};
@@ -58,6 +74,12 @@ exports.login = function() {
   };
 };
 
+/**
+ *  GET /logout
+ *  session out
+ *
+ */
+
 exports.logout = function(){
   return function(req, res, next){
     var session = req.session.account._id;
@@ -66,3 +88,4 @@ exports.logout = function(){
     });
   }
 };
+
