@@ -54,13 +54,15 @@ exports.create = function(){
 
 /**
  *  GET /datas/show
- *  :id data show
- *  @param {Object_id} :id
+ *  datas list show
  *
  */
 
 exports.show = function(){
   return function(req, res, next){
-    res.json(req.body);
+    Datas.find()
+    .exec(function(err, dat){
+      res.json(dat);
+    });
   }
 };
