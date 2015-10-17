@@ -36,6 +36,8 @@ node:
     //assert.equal(res.body.name, field.name, test);
     ```
 
+    !! assert or a should library is recommended as asserting.
+
 4. assert start
   ```
   $ mocha test/chcek.js
@@ -43,7 +45,7 @@ node:
 
 ## Check List Parameters
 
-* check: true or false (Only true moves)
+* check: true or false (Only when it's true, this library moves.)
 * request: get or post(request method)
 * path: request URL
 * test: test item (ex. max words length Check)
@@ -51,6 +53,6 @@ node:
 * cookie: cookie headers
 * statsuCode: expect response statusCode
 * field: post property(ex. field.name : foo)
-* attach: post image(ex. image : ./)
-* param:
-* query:
+* attach: post image(ex. image : /images/main_image.jpg)
+* param: param requet parameter(':id'is necessary for an end of path to use this  ex. /login/:id)
+* query: query requet parameter

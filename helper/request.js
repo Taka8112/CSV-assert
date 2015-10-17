@@ -11,10 +11,8 @@ var assert = require('assert');
 var should = require('should');
 var superagent = require('superagent');
 var async = require('async');
-var config = require('../../config');
 
 var root = 'localhost:8080';
-var rootv = 'localhost:8080/' + config.version;
 
 module.exports = Request;
 
