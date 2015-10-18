@@ -16,7 +16,6 @@ var app = express();
 
 var middleware = require("./lib/index");
 var sessionCheck = middleware.sessionCheck;
-var upload = middleware.upload;
 
 // mongoose connect
 var uri = 'mongodb://localhost/example_server';
