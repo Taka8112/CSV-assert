@@ -1,19 +1,22 @@
 'use strict';
 
-var express = require('express');
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
+var express      = require('express');
+var path         = require('path');
+var favicon      = require('serve-favicon');
+var logger       = require('morgan');
 var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
-var http = require("http");
-var mongoose = require("mongoose");
-var session = require("express-session");
-var RedisStore = require("connect-redis")(session);
+var bodyParser   = require('body-parser');
+var http         = require("http");
+var mongoose     = require("mongoose");
+var session      = require("express-session");
+var RedisStore   = require("connect-redis")(session);
+var multer       = require("multer");
+
 var app = express();
 
 var middleware = require("./lib/index");
 var sessionCheck = middleware.sessionCheck;
+var upload = middleware.upload;
 
 // mongoose connect
 var uri = 'mongodb://localhost/example_server';
@@ -38,13 +41,13 @@ app.use(session({
   cookie: {
     maxAge: 30 * 60 * 1000 //30min
   }
-}));
-
+})); 
 
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(multer({dest: './uploads/'}).single('singleInputFileName'));
 
 // API
-//
+// 
 var routes = require('./routes/index');
 var users = require('./routes/users');
 app.use('/', routes);
@@ -55,7 +58,7 @@ app.use('/dev', dev);
 var members = require('./routes/members');
 var datas = require('./routes/datas');
 
-app.post('/signup', members.signup());
+app.post('/signup' ,members.signup());
 app.post('/login',  members.login());
 app.get('/logout',  members.logout());
 app.post('/datas/create', datas.create());
