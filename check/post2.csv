@@ -1,0 +1,10 @@
+check,request,path,test,session,cookie,statusCode,mimetype,field.name,field.email,field.password,attach.main_image
+TRUE,post,/signup,word limit,ON,{},multipart/form-data,200,foo,debug@,Pass,/images/main_image.jpg
+FALSE,post,/login,success,ON,{},multipart/form-data,200,tobi,Point,"[123,44]",{}
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,

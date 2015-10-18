@@ -21,7 +21,7 @@ var csvtojson = tool.csvtojson;
  * Check list 
  */
 
-var list = __dirname + "/check/post.csv";
+var list = __dirname + "/check/post2.csv";
 
 /**
  * Test
@@ -60,18 +60,19 @@ describe('Assert Start', function () {
           var req = ck.request;
           var path = ck.path;
           var session = ck.session;
+          var mimetype = ck.mimetype;
           var test = ck.test;
           var statuscode = ck.statusCode;
           var field = ck.field;
           var attach = ck.attach;
           var param = ck.param;
           var query = ck.query;
-          var request = new Request(cookie, path, test, field, attach, param, query, statuscode);  
+          var request = new Request(cookie, path, test, mimetype,  field, attach, param, query, statuscode);  
 
             switch(req){
               case 'POST':
               case 'post': {
-                request.post(cookie,path,test,field,attach,{},{},statuscode,function(err , res){
+                request.post(cookie,path,test,mimetype,field,attach,{},{},statuscode,function(err , res){
                   /**
                    * Assert Space
                    */
@@ -82,8 +83,8 @@ describe('Assert Start', function () {
                 break;
               }
               case 'GET': 
-              case 'get': {
-                request.get(cookie,path,test,{},{},param,query,statuscode,function(err , res){
+              case 'get': { 
+                request.get(cookie,path,test,mimetype,{},{},param,query,statuscode,function(err , res){
                   /**
                    * Assert Space
                    */
