@@ -12,6 +12,17 @@ var session      = require("express-session");
 var RedisStore   = require("connect-redis")(session);
 var multer       = require("multer");
 
+var storage      = multer.memoryStorage();
+var upload       = multer({
+  dest: './uploads/',
+  inMemory: true,
+  storage: storage,
+  onError: function (error, next) {
+    console.log(error)
+    next(error)
+  }
+});
+
 var app = express();
 
 var middleware = require("./lib/index");
@@ -43,7 +54,7 @@ app.use(session({
 })); 
 
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(multer({dest: './uploads/'}).single('singleInputFileName'));
+//app.use(multer({dest: './uploads/'}).single('singleInputFileName'));
 
 // API
 // 
@@ -60,8 +71,15 @@ var datas = require('./routes/datas');
 app.post('/signup' ,members.signup());
 app.post('/login',  members.login());
 app.get('/logout',  members.logout());
-app.post('/datas/create', datas.create());
+//app.post('/datas/create', datas.create());
+app.post('/datas/create', upload.single('image') ,datas.create());
 app.get('/datas/show',    datas.show());
+
+// ERROR handling
+app.use(function(err, req, res, next){
+  console.error(err.stack);
+  next(err);
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

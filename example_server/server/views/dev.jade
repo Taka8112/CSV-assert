@@ -37,7 +37,7 @@ block content
   ul
     li Datas 
      p /datas/create
-         form(action='/datas/create', method='post')
+         form(action='/datas/create', method='post', enctype='multipart/form-data')
           p
            | name:
            input(type='text', name='name')

@@ -1,4 +1,5 @@
 'use strict'
+var multer = require("multer");
 
 // session check //
 exports.sessionCheck = function(){
@@ -9,5 +10,12 @@ exports.sessionCheck = function(){
     } else {
       next();
     }
+  };
+};
+
+// upload //
+exports.upload = function(){
+  return function(req ,res , next){
+    next();
   };
 };

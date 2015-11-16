@@ -1,4 +1,6 @@
 var express = require('express');
+var multer = require('multer');
+var upload = multer({});
 var router = express.Router();
 
 var Members = require("../lib/models/members");

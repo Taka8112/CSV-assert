@@ -14,7 +14,19 @@ var datas = new mongoose.Schema({
     type : Date,
   default : Date.now
   },
-  image: { img: Buffer }
+  image: {
+    filename: {
+      type: String
+    },
+    mimetype: {
+      type: String,
+      enum:['image/jpeg','image/gif','image/png','image/bmp','image/jpg']
+    },
+    buffer: {
+      type: Buffer,
+    default: null
+    }
+  }
 });
 
 datas.index({geo: '2dsphere'});
