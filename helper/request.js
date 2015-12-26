@@ -67,7 +67,7 @@ function Request(cookie, path, test, mimetype ,field, attach, param, query, stat
 //              //
 //////////////////
 
-Request.prototype.post = function(cookie, path, test, mimetype  ,field, attach, param, query, statuscode, next){
+Request.prototype.post = function(cookie, path, test, mimetype, field, attach, param, query, statuscode, next){
 
   var pt = path || this.path || "";
   var path = (root + pt).replace(":id" , param);;
@@ -81,32 +81,56 @@ Request.prototype.post = function(cookie, path, test, mimetype  ,field, attach, 
   var param = this.param || {};
   var query = this.query || {};
 
+  var tasks = [];
   var req = superagent.post(path);
   req.set("cookie", cookie)
 
-  if(query != null){
-    req.query(query)
-  }
+  /*
+  tasks.push(function(cb){
+    if(param != null){
+      req.param(param)
+    }
+    cb(null);
+  });
+ */
 
-  if(mimetype === 'multipart/form-data'){
-    merge(field, null, function(key, value){
-      req.field(key , value)
+  tasks.push(function(cb){
+    if(query != null){
+      req.query(query)
+    }
+    cb(null);
+  });
+
+  tasks.push(function(cb){
+    if(mimetype === 'multipart/form-data'){
+      merge(field, null, function(key, value){
+        req.field(key , value)
+        cb(null);
+      });
+    } else {
+      req.send(field);
+      cb(null);
+    }
+  });
+
+  tasks.push(function(cb){
+    cb(null);
+  });
+
+  async.waterfall(tasks, function(err){
+    if(mimetype === 'multipart/form-data'){
       if (Object.keys(attach).length != 0){
         merge(attach, null, function(key, val){
           var value = __dirname + val;
           req.attach(key , value)
         });
-      }
+      };
+    };
+    req.end(function(err, res){
+      if(err) {throw err;}
+      next(err, res);
     });
-  } else {
-    req.send(field);
-  }
-
-  req.end(function(err, res){
-    if(err) {throw err;}
-    next(err, res);
   });
-
 };
 
 

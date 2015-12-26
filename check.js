@@ -52,6 +52,8 @@ describe('Assert Start', function () {
   it('test', function(done){
     csvtojson(list, function(obj){
       async.forEach(obj, function(ck ,cb){
+        //console.log(ck);
+        //console.log('+++++++++++');
         if(ck.check === "FALSE"){
           cb();
         } else {
@@ -67,19 +69,21 @@ describe('Assert Start', function () {
           var attach = ck.attach;
           var param = ck.param;
           var query = ck.query;
-          var request = new Request(cookie, path, test, mimetype,  field, attach, param, query, statuscode);  
+          var request = new Request(cookie, path, test, mimetype, field, attach, param, query, statuscode);  
 
             switch(req){
               case 'POST':
               case 'post': {
-                request.post(cookie,path,test,mimetype,field,attach,{},{},statuscode,function(err , res){
-                  /**
-                   * Assert Space
-                   */
+                request.post(cookie,path,test,mimetype,field,attach,param,query,statuscode,function(err , res){
+                  console.log(res.body);
+
                   //res.statusCode.should.eql(statuscode);
                   //assert.equal(res.body.name, field.name, test);
+                  //console.log(res.body);
+
+                  cb();
                   done();
-                });
+                }); 
                 break;
               }
               case 'GET': 
@@ -90,6 +94,7 @@ describe('Assert Start', function () {
                    */
                   //res.statusCode.should.eql(statuscode);
                   //assert.equal(res.statusCode, statuscode);
+                  cb();
                   done();
                 });
                 break;
