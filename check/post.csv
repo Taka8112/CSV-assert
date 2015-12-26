@@ -1,10 +1,11 @@
-check,request,path,test,session,cookie,statusCode,field.name,field.geo[type],field.geo[coordinates],attach.main_image
-TRUE,post,/login,word limit,ON,{},200,foo,Point,"[123,45]",/images/main_image.jpg
-FALSE,post,/login,success,ON,{},200,tobi,Point,"[123,44]",{}
-,,,,,,,,,,
-,,,,,,,,,,
-,,,,,,,,,,
-,,,,,,,,,,
-,,,,,,,,,,
-,,,,,,,,,,
-,,,,,,,,,,
+check,request,path,test,session,cookie,statusCode,mimetype,field.name,field.geo.type,field.geo.coordinates,attach.image
+TRUE,post,/datas/create,application/x-www-form-urlencodedrequest,ON,{},200,application/x-www-form-urlencoded,foo,Point,"[111,44]",null
+FALSE,post,/datas/create,check false,ON,{},200,multipart/form-data,tobi,Point,"[123,44]",/images/main_image.jpg
+TRUE,post,/datas/create,multipart/form-data request,ON,{},200,multipart/form-data,yeah,Point,"[100,30]",null
+TRUE,post,/datas/create,image request,ON,{},200,multipart/form-data,tobi,Point,"[123,44]",/images/main_image.jpg
+TRUE,post,/datas/create,no session,OFF,{},200,multipart/form-data,yeah,Point,"[100,30]",null
+TRUE,post,/datas/create,bad request : no name,ON,{},400,multipart/form-data,{},Point,"[100,30]",null
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,

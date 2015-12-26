@@ -80,7 +80,7 @@ describe('CSV-Assert', function(){
       csvtojson(source, function(obj){
         async.forEach(obj, function(ck, cb){
           check(ck, cookie , function(res){
-            console.log(res.body);
+            //console.log(res.body);
             cb();
           });
         }, function(err){

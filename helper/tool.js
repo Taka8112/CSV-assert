@@ -44,7 +44,7 @@ exports.csvtojson = function(path,next){
  
 exports.check = function(property, ckie ,next){
 
-  describe('Check', function(){
+  describe('Check' , function(){
 
     var check = property.check || '';
     var req = property.request || '';
@@ -61,22 +61,26 @@ exports.check = function(property, ckie ,next){
     var cookie;
     if (session.match(/ON/i)) {
       if(ckie) {
-        cookie = ckie || {};
+        //console.log('session ON');
+        cookie = ckie;
       } else {
-        console.log('cookie undefind');
+        //console.log('session ON but cookie undefind');
+        cookie = {};
       }
     } else {
-      console.log('cookie undefind');
+      //console.log('session OFF');
+      cookie = {};
     };
 
     var request = new Request(cookie, path, test, mimetype, field, attach, param, query, statuscode);
  
-    if(check.match(/FALSE/i)) {
-      next();
-    } else if(check.match(/TRUE/i)) {
+    it('request : ' + req + ' , path : ' + path  + ' , session : ' + session + ', test : ' + test, function(done){
 
-      it('request : ' + req + ' , path : ' + path  + ' , session : ' + session + ', test : ' + test, function(done){
-        
+      if(check.match(/FALSE/i)) {
+        done();
+        next();
+      } else if(check.match(/TRUE/i)) {
+
         if(req.match(/POST/i)){
           request.post(cookie,path,test,mimetype,field,attach,param,query,statuscode,function(err, res){
             done();
@@ -88,9 +92,9 @@ exports.check = function(property, ckie ,next){
             next(res);
           });
         } else {
-          console.log('undefind');
+          console.log('Request undefind');
         };
-      });
-    };
+      };
+    });
   });
 };
