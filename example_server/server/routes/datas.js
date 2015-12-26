@@ -26,8 +26,15 @@ exports.create = function(){
     var latitude_min = -90;
     var bad_request_code = 400; 
 
-    data.name = datas.name || "No name";
     data.created_at = created_at;
+    
+    if(!datas.name){
+      var error = new Error(bad_request_code + ' , name not post require ');
+      error.status = bad_request_code;
+      return next(error);
+    } else {
+      data.name = datas.name;
+    }
     
     if(image != null){
       data.image.filename = image.originalname;
