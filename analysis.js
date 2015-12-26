@@ -51,6 +51,7 @@ function sessionRequest(callback) {
   });
 };
 
+
 /**
  * Check list 
  */
@@ -80,7 +81,6 @@ describe('CSV-Assert', function(){
       csvtojson(source, function(obj){
         async.forEach(obj, function(ck, cb){
           check(ck, cookie , function(res){
-            //console.log(res.body);
             cb();
           });
         }, function(err){
@@ -94,6 +94,7 @@ describe('CSV-Assert', function(){
   });
 
   it('Assert Start', function(done){
+    //assert.equal('aaa', 'bbb');
     done();
   });
 

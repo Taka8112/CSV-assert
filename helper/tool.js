@@ -4,9 +4,10 @@
  * Assert Tool.
  */
 
-var async = require('async');
+var async = require("async");
 var fs = require("fs");
-var superagent = require('superagent');
+var assert = require("assert");
+var superagent = require("superagent");
 var Converter = require("csvtojson").Converter;
 var Request = require("./request");
 
@@ -59,13 +60,14 @@ exports.check = function(property, ckie ,next){
 
     var session = property.session || ''; 
     var cookie;
+
     if (session.match(/ON/i)) {
-      if(ckie) {
-        //console.log('session ON');
-        cookie = ckie;
-      } else {
+      if(Object.keys(ckie).length === 0) {
         //console.log('session ON but cookie undefind');
         cookie = {};
+      } else {
+        //console.log('session ON');
+        cookie = ckie;
       }
     } else {
       //console.log('session OFF');
@@ -74,12 +76,13 @@ exports.check = function(property, ckie ,next){
 
     var request = new Request(cookie, path, test, mimetype, field, attach, param, query, statuscode);
  
-    it('request : ' + req + ' , path : ' + path  + ' , session : ' + session + ', test : ' + test, function(done){
-
-      if(check.match(/FALSE/i)) {
+    if(check.match(/FALSE/i)) {
+      it.skip('request : ' + req + ' , path : ' + path  + ' , session : ' + session + ', test : ' + test, function(done){
         done();
         next();
-      } else if(check.match(/TRUE/i)) {
+      });
+    } else if(check.match(/TRUE/i)) {
+      it('request : ' + req + ' , path : ' + path  + ' , session : ' + session + ', test : ' + test, function(done){
 
         if(req.match(/POST/i)){
           request.post(cookie,path,test,mimetype,field,attach,param,query,statuscode,function(err, res){
@@ -93,8 +96,9 @@ exports.check = function(property, ckie ,next){
           });
         } else {
           console.log('Request undefind');
+          next(res);
         };
-      };
-    });
+      });
+    };
   });
 };
