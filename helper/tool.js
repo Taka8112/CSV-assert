@@ -102,3 +102,54 @@ exports.check = function(property, ckie ,next){
     };
   });
 };
+
+exports.test = function(property, ckie ,next){
+  describe('Check' , function(){
+
+    var check = property.check || '';
+    var req = property.request || '';
+    var path = property.path || '';
+    var test = property.test || '';
+    var mimetype = property.mimetype || '';
+    var field = property.field || {};
+    var attach = property.attach || {};
+    var param = property.param || {};
+    var query = property.query || {};
+    var statuscode = property.statusCode || '';
+
+    var session = property.session || ''; 
+    var cookie;
+
+    if (session.match(/ON/i)) {
+      if(Object.keys(ckie).length === 0) {
+        //console.log('session ON but cookie undefind');
+        cookie = {};
+      } else {
+        //console.log('session ON');
+        cookie = ckie;
+      }
+    } else {
+      //console.log('session OFF');
+      cookie = {};
+    };
+
+    var request = new Request(cookie, path, test, mimetype, field, attach, param, query, statuscode);
+
+    if(check.match(/FALSE/i)) {
+      next();
+    } else if(check.match(/TRUE/i)) {
+      if(req.match(/POST/i)){
+        request.post(cookie,path,test,mimetype,field,attach,param,query,statuscode,function(err, res){
+          next(res);
+        });
+      } else if(req.match(/GET/i)) {
+        request.get(cookie,path,test,mimetype,field,attach,param,query,statuscode,function(err, res){
+          next(res);
+        });
+      } else {
+        console.log('Request undefind');
+        next(res);
+      };
+    };
+  });
+};
