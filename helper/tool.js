@@ -103,7 +103,7 @@ exports.check = function(property, ckie ,next){
   });
 };
 
-exports.test = function(property, ckie ,next){
+exports.test = function(property, ckie, id, next){
   describe('Check' , function(){
 
     var check = property.check || '';
@@ -113,7 +113,7 @@ exports.test = function(property, ckie ,next){
     var mimetype = property.mimetype || '';
     var field = property.field || {};
     var attach = property.attach || {};
-    var param = property.param || {};
+    var param = id || {};
     var query = property.query || {};
     var statuscode = property.statusCode || '';
 

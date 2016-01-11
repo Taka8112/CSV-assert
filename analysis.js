@@ -47,6 +47,18 @@ function sessionRequest(callback) {
     });
   });
 
+  tasks.push(function(next){
+    superagent
+    .post('localhost:8080/datas/create')
+    .set('cookie', cookie)
+    .send({name: 'nogu'})
+    .send({geo: {type:'Point',coordinates:['123' , '45']}})
+    .end(function(err, res){
+      id = res.body._id;
+      next(null);
+    });
+  });
+
   async.waterfall(tasks, function(err){
     callback(cookie);
   });
@@ -57,7 +69,7 @@ function sessionRequest(callback) {
  * Check list 
  */
 
-var source = __dirname + "/check/get.csv";
+var source = __dirname + "/check/post.csv";
 
 /**
  * Test
@@ -65,6 +77,7 @@ var source = __dirname + "/check/get.csv";
 
 var root = "localhost:8080";
 var db = start();
+var id = {};
 var cookie = {};
 var session;
 
@@ -89,11 +102,9 @@ describe('CSV-Assert', function(){
   ], function(err){
     describe('Check',function(){
       properties.forEach(function(property){
-
         if(property.check.match(/TRUE/i)){
           it(property.test, function(done){
-            test(property, cookie , function(res){
-              console.log(res.req.path);
+            test(property, cookie , id ,function(res){
               //assert.equal(res.statusCode, 200)
               done();
             });

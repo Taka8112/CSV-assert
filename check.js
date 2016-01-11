@@ -15,6 +15,7 @@ var async = require("async");
 
 var tool = require("./helper/tool");
 var csvtojson = tool.csvtojson;
+var check = tool.check;
 var test = tool.test;
 
 /**
@@ -46,6 +47,18 @@ function sessionRequest(callback) {
     });
   });
 
+  tasks.push(function(next){
+    superagent
+    .post('localhost:8080/datas/create')
+    .set('cookie', cookie)
+    .send({name: 'nogu'})
+    .send({geo: {type:'Point',coordinates:['123' , '45']}})
+    .end(function(err, res){
+      id = res.body._id;
+      next(null);
+    });
+  });
+
   async.waterfall(tasks, function(err){
     callback(cookie);
   });
@@ -64,8 +77,10 @@ var source = __dirname + "/check/post.csv";
 
 var root = "localhost:8080";
 var db = start();
+var id = {};
 var cookie = {};
 var session;
+
 
 describe('CSV-Assert', function(){
 
@@ -87,11 +102,11 @@ describe('CSV-Assert', function(){
   ], function(err){
     describe('Check',function(){
       properties.forEach(function(property){
-
         if(property.check.match(/TRUE/i)){
           it(property.test, function(done){
-            test(property, cookie , function(res){
-              assert.equal(res.statusCode, 200)
+            test(property, cookie , id ,function(res){
+              //console.log(res.req.path);
+              //assert.equal(res.statusCode, 200)
               done();
             });
           });
