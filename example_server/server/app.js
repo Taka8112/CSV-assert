@@ -72,9 +72,10 @@ app.post('/signup' ,members.signup());
 app.post('/login',  members.login());
 app.get('/logout',  members.logout());
 //app.post('/datas/create', datas.create());
-//app.post('/datas/create', upload.single('image') ,datas.create());
-app.post('/datas/create' ,sessionCheck() ,upload.single('image') ,datas.create());
-app.get('/datas/show', sessionCheck(), datas.show());
+app.post('/datas/create', upload.single('image') ,datas.create());
+//app.post('/datas/create' ,sessionCheck() ,upload.single('image') ,datas.create());
+app.get('/datas/show/:id', sessionCheck(), datas.show());
+app.get('/datas/search', sessionCheck(), datas.search());
 
 // ERROR handling
 app.use(function(err, req, res, next){

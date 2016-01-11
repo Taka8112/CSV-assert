@@ -6,6 +6,9 @@ var router = express.Router();
 var Members = require("../lib/models/members");
 var Datas = require("../lib/models/datas");
 
+var bad_request_code = 400; 
+var url_error_code = 404; 
+
 /**
  *  POST /datas/create
  *  datas create
@@ -24,7 +27,6 @@ exports.create = function(){
     var longtitude_min = -180;
     var latitude_max = 90;
     var latitude_min = -90;
-    var bad_request_code = 400; 
 
     data.created_at = created_at;
     
@@ -87,7 +89,43 @@ exports.create = function(){
 
 exports.show = function(){
   return function(req, res, next){
-    Datas.find()
+    var id = req.params.id;
+
+    Datas.findOne({_id:id})
+    .exec(function(err, dat){
+      res.json(dat);
+    });
+  }
+};
+
+/**
+ *  GET /datas/search
+ *  datas list show query serach
+ *
+ */
+
+exports.search = function(){
+  return function(req, res, next){
+    if(!req.query.geo.type){
+      var error = new Error(url_error_code + ' , geo type not find ');
+      error.status = url_error_code;
+      return next(error);
+    } else {
+      var type = req.query.type;
+    }
+
+    if(!req.query.geo.coordinates){
+      var error = new Error(url_error_code + ' , geo coordinates not find ');
+      error.status = url_error_code;
+      return next(error);
+    } else {
+      var coordinates = req.query.coordinates;
+    }
+
+    Datas.findOne({geo :
+                  {$near:
+                    {type: type, coordinates: coordinates}},
+                    type})
     .exec(function(err, dat){
       res.json(dat);
     });
