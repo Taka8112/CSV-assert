@@ -14,14 +14,49 @@ var superagent = require("superagent");
 var async = require("async");
 
 var tool = require("./helper/tool");
-var Request = require("./helper/request");
 var csvtojson = tool.csvtojson;
+var test = tool.test;
+
+/**
+ * Session Request 
+ */
+
+function sessionRequest(callback) {
+  var tasks = [];
+
+  tasks.push(function(next){
+    superagent
+    .post('localhost:8080/signup')
+    .send({name: 'noff'})
+    .send({email: 'ngc.ngc274@gmail.com'})
+    .send({password: 'Password'})
+    .end(function(err, res){
+      next(null);
+    });
+  });
+
+  tasks.push(function(next){
+    superagent
+    .post('localhost:8080/login')
+    .send({name_or_email: 'noff'})
+    .send({Password: 'Password'})
+    .end(function(err, res){
+      cookie = res.headers['set-cookie'];
+      next(null);
+    });
+  });
+
+  async.waterfall(tasks, function(err){
+    callback(cookie);
+  });
+};
+
 
 /**
  * Check list 
  */
 
-var list = __dirname + "/check/post2.csv";
+var source = __dirname + "/check/post.csv";
 
 /**
  * Test
@@ -29,86 +64,49 @@ var list = __dirname + "/check/post2.csv";
 
 var root = "localhost:8080";
 var db = start();
-var cookie;
+var cookie = {};
+var session;
 
-describe('Assert Start', function () {
+describe('CSV-Assert', function(){
 
-  before(function(done){
-    var tasks = [];
+  var properties = [];
+  async.series([
+    function(callback){
+      before(function(done){
+        sessionRequest(function(cookie){
+          done();
+          callback();
+        });
+      });
+    }, function(callback){
+      csvtojson(source, function(obj){
+        properties = obj;
+        callback();
+      });
+    }
+  ], function(err){
+    describe('Check',function(){
+      properties.forEach(function(property){
 
-    tasks.push(function(next){
-      /**
-       * Example cookie  
-       */
-      //cookie = req.session;
-      next(null);
-    });
-
-    async.waterfall(tasks, function(err){
-      done();
-    });
-  });
-
-  it('test', function(done){
-    csvtojson(list, function(obj){
-      async.forEach(obj, function(ck ,cb){
-        //console.log(ck);
-        //console.log('+++++++++++');
-        if(ck.check === "FALSE"){
-          cb();
-        } else {
-
-          var model = ck.model;
-          var req = ck.request;
-          var path = ck.path;
-          var session = ck.session;
-          var mimetype = ck.mimetype;
-          var test = ck.test;
-          var statuscode = ck.statusCode;
-          var field = ck.field;
-          var attach = ck.attach;
-          var param = ck.param;
-          var query = ck.query;
-          var request = new Request(cookie, path, test, mimetype, field, attach, param, query, statuscode);  
-
-            switch(req){
-              case 'POST':
-              case 'post': {
-                request.post(cookie,path,test,mimetype,field,attach,param,query,statuscode,function(err , res){
-                  console.log(res.body);
-
-                  //res.statusCode.should.eql(statuscode);
-                  //assert.equal(res.body.name, field.name, test);
-                  //console.log(res.body);
-
-                  cb();
-                  done();
-                }); 
-                break;
-              }
-              case 'GET': 
-              case 'get': { 
-                request.get(cookie,path,test,mimetype,{},{},param,query,statuscode,function(err , res){
-                  /**
-                   * Assert Space
-                   */
-                  //res.statusCode.should.eql(statuscode);
-                  //assert.equal(res.statusCode, statuscode);
-                  cb();
-                  done();
-                });
-                break;
-              }
-              default:
-                console.log("Please select request");
+        if(property.check.match(/TRUE/i)){
+          it(property.test, function(done){
+            test(property, cookie , function(res){
+              assert.equal(res.statusCode, 200)
               done();
-              break;
-            }
-        }
-      }, function(err){
-        if (err) {throw err;}
+            });
+          });
+        } else {
+          it.skip(property.test, function(done){
+            done();
+          });
+        };
+
       });
     });
   });
-});
+  
+  it('Start', function(done){
+    done();
+  })
 
+});

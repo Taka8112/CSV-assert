@@ -16,6 +16,7 @@ var async = require("async");
 var tool = require("./helper/tool");
 var csvtojson = tool.csvtojson;
 var check = tool.check;
+var test = tool.test;
 
 /**
  * Session Request 
@@ -56,7 +57,7 @@ function sessionRequest(callback) {
  * Check list 
  */
 
-var source = __dirname + "/check/post.csv";
+var source = __dirname + "/check/get.csv";
 
 /**
  * Test
@@ -67,8 +68,10 @@ var db = start();
 var cookie = {};
 var session;
 
+
 describe('CSV-Assert', function(){
 
+  var properties = [];
   async.series([
     function(callback){
       before(function(done){
@@ -79,24 +82,34 @@ describe('CSV-Assert', function(){
       });
     }, function(callback){
       csvtojson(source, function(obj){
-        async.forEach(obj, function(ck, cb){
-          check(ck, cookie , function(res){
-            cb();
-          });
-        }, function(err){
-          callback();
-          if (err) {throw err};
-        });
+        properties = obj;
+        callback();
       });
     }
   ], function(err){
-    if(err) {throw err;}
-  });
+    describe('Check',function(){
+      properties.forEach(function(property){
 
-  it('Assert Start', function(done){
-    //assert.equal('aaa', 'bbb');
-    done();
+        if(property.check.match(/TRUE/i)){
+          it(property.test, function(done){
+            test(property, cookie , function(res){
+              console.log(res.req.path);
+              //assert.equal(res.statusCode, 200)
+              done();
+            });
+          });
+        } else {
+          it.skip(property.test, function(done){
+            done();
+          });
+        };
+
+      });
+    });
   });
+  
+  it('Start', function(done){
+    done();
+  })
 
 });
-

@@ -1,0 +1,7 @@
+check,request,path,test,session,cookie,statusCode,mimetype,field.name,field.geo.type,field.geo.coordinates,attach.image
+FALSE,post,/datas/create,multipart/form-data request,ON,{},200,multipart/form-data,eah,Point,"[100,30]",null
+TRUE,post,/datas/create,no session,OFF,{},400,multipart/form-data,yeah,Point,"[100,30]",null
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,

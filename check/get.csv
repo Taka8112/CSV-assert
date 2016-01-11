@@ -1,7 +1,7 @@
 check,request,path,test,session,cookie,statusCode,query.geo[type],query.geo[coordinates],param.id
-TRUE,get,/show,取得数確認,ON,{},200,Point,"[123,45]",{}
-FALSE,get,/show,取得数確認,ON,{},200,Point,"[123,44]",{}
-,,,,,,,,,
+TRUE,get,/datas/show,true request,ON,{},200,{},[],{}
+FALSE,get,/datas/show,check false,ON,{},200,Point,"[123,44]",{}
+TRUE,get,/datas/show,query request,ON,{},404,Point,"[123,45]",{}
 ,,,,,,,,,
 ,,,,,,,,,
 ,,,,,,,,,
