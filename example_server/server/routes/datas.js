@@ -106,6 +106,7 @@ exports.show = function(){
 
 exports.search = function(){
   return function(req, res, next){
+
     if(!req.query.geo.type){
       var error = new Error(url_error_code + ' , geo type not find ');
       error.status = url_error_code;
@@ -122,10 +123,7 @@ exports.search = function(){
       var coordinates = req.query.coordinates;
     }
 
-    Datas.findOne({geo :
-                  {$near:
-                    {type: type, coordinates: coordinates}},
-                    type})
+    Datas.findOne()
     .exec(function(err, dat){
       res.json(dat);
     });

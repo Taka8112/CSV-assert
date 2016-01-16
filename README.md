@@ -5,45 +5,68 @@ CSV-assert is posted in multipart/form-data basically.
 
 ## Installation
 
-node:
+	git clone git://github.com/Taka8112/CSV-assert
+
+## Simple Quick Start
+
+	$ CSV-assert/mocha check.js
+
+## Usage
+### check list
+Create Assert csv file
+
+	$ CSV-assert/check/
+
+example csv file is post.csv and get.csv
+
+check.js default setting get.csv
+
+### Assert
+
+Assert target csv file  
 
   ```
-  $ npm install csv-assert
+ /**
+   * Check list 
+   */ 
+  var source = __dirname + "/check/get.csv";
+  ``` 
+
+add assert function
+
+  ```
+	  describe('Check',function(){
+        properties.forEach(function(property){
+          if(property.check.match(/TRUE/i)){
+            it(property.test, function(done){
+              test(property, cookie , id ,function(res){
+              
+                //assert.equal(res.statusCode, 200)//assert function
+                
+                done();
+              });
+            });
+          } else {
+            it.skip(property.test, function(done){
+              done();
+            });
+          };
+        });
+      });
   ```
 
-## To begin example
+## Example_server Assert
+### Example_server Run
+	1. $ CSV-assert/example_server/server/refresh //mongod run 
 
-1. install it:
+	2. $ CSV-assert/example_server/server/redis-server　//redis-server run
 
-  ```
-  $ npm install csv-assert
-  ```
-2. make assert csv files:
+	3. $ CSV-assert/example_server/server/node app.js　//server run
+### CSV-Assert Run
+	$ CSV-assert/mocha analysis.js  
 
-  ./check/ check.csv
 
-3. write Assert method
-
-  ./check.js
-
-    ```
-    exapmle
-
-    /**
-    * Assert Space
-    */
-    //res.statusCode.should.eql(statuscode);
-    //assert.equal(res.body.name, field.name, test);
-    ```
-
-    !! assert or a should library is recommended as asserting.
-
-4. assert start
-  ```
-  $ mocha test/chcek.js
-  ```
-
-## Check List Parameters
+# Check List Parameters
 
 * check: true or false (Only when it's true, this library moves.)
 * request: get or post(request method)
@@ -52,6 +75,7 @@ node:
 * session: ON or OFF (cookie registration is needed to use this.)
 * cookie: cookie headers
 * statsuCode: expect response statusCode
+* mimetype: mimetype(ex.multipart/form-data)
 * field: post property(ex. field.name : foo)
 * attach: post image(ex. image : /images/main_image.jpg)
 * param: param requet parameter(':id'is necessary for an end of path to use this  ex. /login/:id)

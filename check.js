@@ -19,57 +19,10 @@ var check = tool.check;
 var test = tool.test;
 
 /**
- * Session Request 
- */
-
-function sessionRequest(callback) {
-  var tasks = [];
-
-  tasks.push(function(next){
-    superagent
-    .post('localhost:8080/signup')
-    .send({name: 'noff'})
-    .send({email: 'ngc.ngc274@gmail.com'})
-    .send({password: 'Password'})
-    .end(function(err, res){
-      next(null);
-    });
-  });
-
-  tasks.push(function(next){
-    superagent
-    .post('localhost:8080/login')
-    .send({name_or_email: 'noff'})
-    .send({Password: 'Password'})
-    .end(function(err, res){
-      cookie = res.headers['set-cookie'];
-      next(null);
-    });
-  });
-
-  tasks.push(function(next){
-    superagent
-    .post('localhost:8080/datas/create')
-    .set('cookie', cookie)
-    .send({name: 'nogu'})
-    .send({geo: {type:'Point',coordinates:['123' , '45']}})
-    .end(function(err, res){
-      id = res.body._id;
-      next(null);
-    });
-  });
-
-  async.waterfall(tasks, function(err){
-    callback(cookie);
-  });
-};
-
-
-/**
  * Check list 
  */
 
-var source = __dirname + "/check/post.csv";
+var source = __dirname + "/check/get.csv";
 
 /**
  * Test
@@ -87,13 +40,6 @@ describe('CSV-Assert', function(){
   var properties = [];
   async.series([
     function(callback){
-      before(function(done){
-        sessionRequest(function(cookie){
-          done();
-          callback();
-        });
-      });
-    }, function(callback){
       csvtojson(source, function(obj){
         properties = obj;
         callback();
@@ -105,8 +51,9 @@ describe('CSV-Assert', function(){
         if(property.check.match(/TRUE/i)){
           it(property.test, function(done){
             test(property, cookie , id ,function(res){
-              //console.log(res.req.path);
-              //assert.equal(res.statusCode, 200)
+
+              //assert.equal(res.statusCode, 200) //assert function
+
               done();
             });
           });
@@ -115,7 +62,6 @@ describe('CSV-Assert', function(){
             done();
           });
         };
-
       });
     });
   });
